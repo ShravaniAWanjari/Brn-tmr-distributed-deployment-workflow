@@ -1,0 +1,28 @@
+dataset:
+  root_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/data"
+  train_split: "Training"
+  test_split: "Testing"
+  classes:
+    - "glioma"
+    - "meningioma"
+    - "notumor"
+    - "pituitary"
+
+transforms:
+  target_size: [224, 224]
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+  rotation_degrees: 15
+  brightness_jitter: 0.2
+  contrast_jitter: 0.2
+
+dataloader:
+  batch_size: 32
+  num_workers: 4
+  shuffle_train: true
+  drop_last_train: true
+
+reports:
+  output_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/data/reports"
+  stats_file: "dataset_statistics.json"
+  mapping_file: "label_mapping.json"

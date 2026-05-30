@@ -1,0 +1,24 @@
+experiment_name: "efficientnet_b0_brain_tumor"
+
+# Model settings
+model:
+  name: "efficientnet_b0"
+  num_classes: 4
+  pretrained: true
+  freeze_base: false
+
+# Training parameters
+training:
+  epochs: 50
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  patience: 7
+  min_lr: 0.00001
+
+# Paths for artifacts
+paths:
+  checkpoint_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/ml/checkpoints"
+  tensorboard_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/ml/runs"
+  report_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/ml/reports"
+  best_model_name: "best_model.pth"
+  onnx_export_name: "best_model.onnx"
