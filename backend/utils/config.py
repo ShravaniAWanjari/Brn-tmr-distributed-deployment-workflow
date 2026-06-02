@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     
     # Model configuration
-    MODEL_PATH: str = "../ml/checkpoints/best_model.onnx"
+    MODEL_PATH: str = "../ml/artifacts/best_model.onnx"
     CLASSES: List[str] = ["glioma", "meningioma", "notumor", "pituitary"]
     
     # Logging configuration

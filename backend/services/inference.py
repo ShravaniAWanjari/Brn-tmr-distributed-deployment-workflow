@@ -5,8 +5,8 @@ from PIL import Image
 import io
 import structlog
 from typing import Tuple, List, Dict
-from ..utils.config import settings
-from ..metrics.prometheus import INFERENCE_LATENCY, PREDICTION_COUNT
+from utils.config import settings
+from metrics.prometheus import INFERENCE_LATENCY, PREDICTION_COUNT
 
 logger = structlog.get_logger()
 

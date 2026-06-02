@@ -9,7 +9,7 @@ model:
 
 # Training parameters
 training:
-  epochs: 50
+  epochs: 1
   learning_rate: 0.001
   weight_decay: 0.0001
   patience: 7
@@ -17,8 +17,10 @@ training:
 
 # Paths for artifacts
 paths:
-  checkpoint_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/ml/checkpoints"
+  artifacts_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/ml/artifacts"
   tensorboard_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/ml/runs"
-  report_dir: "c:/Users/shrav/Desktop/12 week thing/devops-project/ml/reports"
   best_model_name: "best_model.pth"
   onnx_export_name: "best_model.onnx"
+  metrics_name: "metrics.json"
+  classification_report_name: "classification_report.json"
+  confusion_matrix_name: "confusion_matrix.png"

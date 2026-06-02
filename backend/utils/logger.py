@@ -1,7 +1,7 @@
 import logging
 import structlog
 import sys
-from .config import settings
+from utils.config import settings
 
 def setup_logger():
     """

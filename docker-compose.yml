@@ -1,0 +1,36 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+    container_name: brain-tumor-api
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/model/best_model.onnx
+    volumes:
+      - ./ml/artifacts:/model:ro
+
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus-dev
+
+    ports:
+      - "9090:9090"
+
+    volumes:
+      - ./infra/monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+    depends_on:
+      - backend
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+
+    ports:
+      - "3001:3000"
+
+    depends_on:
+      - prometheus

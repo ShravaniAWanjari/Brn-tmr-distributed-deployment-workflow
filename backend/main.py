@@ -3,11 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 import structlog
 import uvicorn
 
-from .utils.config import settings
-from .middleware.logging import StructlogMiddleware
-from .middleware.metrics import PrometheusMiddleware
-from .api.router import router
-from .services.inference import model_service
+from utils.config import settings
+from middleware.logging import StructlogMiddleware
+from middleware.metrics import PrometheusMiddleware
+from api.router import router
+from services.inference import model_service
 
 logger = structlog.get_logger()
 

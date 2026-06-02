@@ -6,6 +6,18 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
 import sys
+import random
+import numpy as np
+
+def set_seed(seed=42):
+    """Sets the seed for reproducible training."""
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    if torch.cuda.is_available():
+        torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
 
 # Ensure data package is importable from the project root
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -14,13 +26,15 @@ from ml.models.model import get_efficientnet_b0
 from ml.training.callbacks import EarlyStopping
 
 def train_model(train_config_path, data_config_path):
+    set_seed(42)
+    
     with open(train_config_path, 'r') as f:
         config = yaml.safe_load(f)
     with open(data_config_path, 'r') as f:
         data_config = yaml.safe_load(f)
 
     # Setup directories
-    os.makedirs(config['paths']['checkpoint_dir'], exist_ok=True)
+    os.makedirs(config['paths']['artifacts_dir'], exist_ok=True)
     os.makedirs(config['paths']['tensorboard_dir'], exist_ok=True)
     
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -42,10 +56,10 @@ def train_model(train_config_path, data_config_path):
     optimizer = optim.AdamW(model.parameters(), 
                             lr=config['training']['learning_rate'], 
                             weight_decay=config['training']['weight_decay'])
-    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=3, verbose=True)
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=3)
 
     # Callbacks & Logging
-    ckpt_path = os.path.join(config['paths']['checkpoint_dir'], config['paths']['best_model_name'])
+    ckpt_path = os.path.join(config['paths']['artifacts_dir'], config['paths']['best_model_name'])
     early_stopping = EarlyStopping(patience=config['training']['patience'], verbose=True, path=ckpt_path)
     writer = SummaryWriter(log_dir=config['paths']['tensorboard_dir'])
 

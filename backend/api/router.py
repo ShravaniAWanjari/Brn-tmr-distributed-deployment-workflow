@@ -4,8 +4,8 @@ from prometheus_client import generate_latest, CONTENT_TYPE_LATEST
 from fastapi.responses import Response
 import structlog
 
-from ..schemas.payload import PredictionResponse, BatchPredictionResponse
-from .dependencies import get_model_service
+from schemas.payload import PredictionResponse, BatchPredictionResponse
+from api.dependencies import get_model_service
 
 logger = structlog.get_logger()
 router = APIRouter()

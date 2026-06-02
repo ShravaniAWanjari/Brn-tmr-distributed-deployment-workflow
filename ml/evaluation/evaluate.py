@@ -5,6 +5,9 @@ import logging
 import torch
 import torch.nn.functional as F
 import sys
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import classification_report, confusion_matrix
 
 # Ensure data and ml packages are importable
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
@@ -25,7 +28,7 @@ def evaluate_model(train_config_path, data_config_path):
 
     # Load Model
     model = get_efficientnet_b0(num_classes=config['model']['num_classes'], pretrained=False)
-    ckpt_path = os.path.join(config['paths']['checkpoint_dir'], config['paths']['best_model_name'])
+    ckpt_path = os.path.join(config['paths']['artifacts_dir'], config['paths']['best_model_name'])
     
     if not os.path.exists(ckpt_path):
         raise FileNotFoundError(f"No checkpoint found at {ckpt_path}. Run training first.")
@@ -55,13 +58,32 @@ def evaluate_model(train_config_path, data_config_path):
     metrics = calculate_metrics(all_labels, all_preds, all_probs)
     
     # Save Report
-    os.makedirs(config['paths']['report_dir'], exist_ok=True)
-    report_path = os.path.join(config['paths']['report_dir'], 'performance_report.json')
+    artifacts_dir = config['paths']['artifacts_dir']
+    os.makedirs(artifacts_dir, exist_ok=True)
     
-    with open(report_path, 'w') as f:
+    metrics_path = os.path.join(artifacts_dir, config['paths']['metrics_name'])
+    with open(metrics_path, 'w') as f:
         json.dump(metrics, f, indent=4)
         
-    logging.info(f"Evaluation complete. Metrics saved to {report_path}")
+    # Generate and save classification report
+    target_names = data_config['dataset']['classes']
+    clf_report = classification_report(all_labels, all_preds, target_names=target_names, output_dict=True)
+    clf_report_path = os.path.join(artifacts_dir, config['paths']['classification_report_name'])
+    with open(clf_report_path, 'w') as f:
+        json.dump(clf_report, f, indent=4)
+        
+    # Plot and save confusion matrix
+    cm = confusion_matrix(all_labels, all_preds)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=target_names, yticklabels=target_names)
+    plt.title('Confusion Matrix')
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    cm_path = os.path.join(artifacts_dir, config['paths']['confusion_matrix_name'])
+    plt.savefig(cm_path)
+    plt.close()
+        
+    logging.info(f"Evaluation complete. Artifacts saved to {artifacts_dir}")
     logging.info(f"Accuracy: {metrics['accuracy']:.4f}")
     logging.info(f"F1 Score: {metrics['f1']:.4f}")
 

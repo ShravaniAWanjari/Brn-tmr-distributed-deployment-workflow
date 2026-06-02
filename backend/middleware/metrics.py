@@ -1,7 +1,7 @@
 import time
 from fastapi import Request
 from starlette.middleware.base import BaseHTTPMiddleware
-from ..metrics.prometheus import REQUEST_COUNT, REQUEST_LATENCY
+from metrics.prometheus import REQUEST_COUNT, REQUEST_LATENCY
 
 class PrometheusMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):

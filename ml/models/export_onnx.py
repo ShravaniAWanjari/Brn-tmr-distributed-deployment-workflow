@@ -1,13 +1,17 @@
 import os
 import torch
 import logging
-from .model import get_efficientnet_b0
+import sys
+
+# Ensure ml package is importable
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+from ml.models.model import get_efficientnet_b0
 
 def export_to_onnx(config):
     """
     Loads the best PyTorch checkpoint and exports it to ONNX format.
     """
-    ckpt_dir = config['paths']['checkpoint_dir']
+    ckpt_dir = config['paths']['artifacts_dir']
     pth_path = os.path.join(ckpt_dir, config['paths']['best_model_name'])
     onnx_path = os.path.join(ckpt_dir, config['paths']['onnx_export_name'])
     
