@@ -24,7 +24,7 @@ def test_postprocess(model_service):
     assert isinstance(probabilities, dict)
     assert len(probabilities) == 4
     
-@patch("backend.services.inference.Image.open")
+@patch("services.inference.Image.open")
 def test_preprocess(mock_open, model_service):
     # Create a dummy image
     from PIL import Image
