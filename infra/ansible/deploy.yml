@@ -1,0 +1,12 @@
+---
+- name: Deploy Brain Tumor Platform
+  hosts: app
+
+  tasks:
+    - name: Check Docker Installation
+      command: docker --version
+      register: docker_version
+
+    - name: Display Docker Version
+      debug:
+        var: docker_version.stdout
