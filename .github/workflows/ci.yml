@@ -4,11 +4,11 @@ on:
   push:
     branches:
       - main
-      -develop
-  pull_requests:
+      - develop
+  pull_request:
     branches:
       - main
-      -develop
+      - develop
 
 jobs:
   test-and-build:
@@ -29,6 +29,11 @@ jobs:
           cd backend
           pip install --upgrade pip
           pip install -r requirements.txt
+
+      - name: Run Tests
+        run: |
+          cd backend
+          pytest
 
       - name: Verify FastAPI Imports
         run: |

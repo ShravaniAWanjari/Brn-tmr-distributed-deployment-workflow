@@ -1,8 +1,8 @@
 import numpy as np
 import pytest
 from unittest.mock import MagicMock, patch
-from ..services.inference import ModelService
-from ..utils.config import settings
+from services.inference import ModelService
+from utils.config import settings
 
 @pytest.fixture
 def model_service():
