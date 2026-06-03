@@ -14,5 +14,6 @@ if (Test-Path $sshPath) {
 
 docker run --rm -it `
   -v "${PWD}:/workspace" `
+  -v /var/run/docker.sock:/var/run/docker.sock `
   $sshVolume `
   ansible-control $args
