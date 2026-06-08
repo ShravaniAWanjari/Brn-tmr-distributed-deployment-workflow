@@ -3,10 +3,32 @@
   hosts: app
 
   tasks:
-    - name: Check Docker Installation
-      command: docker --version
-      register: docker_version
+    - name: Pull latest image from Docker Hub
+      shell: docker stop brain-tumor-api || true
 
-    - name: Display Docker Version
+    - name: Remove existing container
+      shell: docker rm brain-tumor-api || true
+
+    - name: Build latest image
+      shell: |
+        cd {{ playbook_dir }}/../../
+        docker build -t brain-tumor-api ./backend
+
+    - name: Start container
+      shell: |
+        docker run -d \
+        --name brain-tumor-api \
+        -p 8000:8000 \
+        brain-tumor-api
+
+    - name: Wait for startup
+      pause:
+        seconds: 10
+
+    - name: Health check
+      shell: docker exec brain-tumor-api python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+      register: health_result
+
+    - name: Display health status
       debug:
-        var: docker_version.stdout
+        var: health_result.stdout
