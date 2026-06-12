@@ -31,4 +31,4 @@
 
     - name: Display health status
       debug:
-        var: health_result.stdout
+        var: health_result.status
