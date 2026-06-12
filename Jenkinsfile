@@ -5,7 +5,8 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/ShravaniAWanjari/Brn-tmr-distributed-deployment-workflow.git'                
+                git branch: 'main',
+                url: 'https://github.com/ShravaniAWanjari/Brn-tmr-distributed-deployment-workflow.git'                
             }
         }
 
