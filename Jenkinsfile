@@ -14,5 +14,14 @@ pipeline {
                 sh 'docker images | grep brain-tumor-api'
             }
         }
+
+        stage('Deploy With Ansible') {
+            steps {
+                sh '''
+                cd infra/ansible
+                ansible-playbook -i inventory.ini deploy.yml
+                '''
+            }
+        }
     }
 }
