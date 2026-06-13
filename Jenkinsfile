@@ -26,7 +26,7 @@ pipeline {
 
         stage('Health Check') {
             steps {
-                sh 'curl http://localhost:8000/health'
+                sh 'curl http://host.docker.internal:8000/health'
             }
         }
     }
