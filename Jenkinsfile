@@ -9,5 +9,10 @@ pipeline {
             }
         }
 
+        stage('Verify Image') {
+            steps {
+                sh 'docker images | grep brain-tumor-api'
+            }
+        }
     }
 }
