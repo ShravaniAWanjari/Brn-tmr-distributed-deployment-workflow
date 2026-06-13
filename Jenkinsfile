@@ -1,20 +1,22 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout(true)
+    }
+
     stages {
 
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                url: 'https://github.com/ShravaniAWanjari/Brn-tmr-distributed-deployment-workflow.git'                
+                    url: 'https://github.com/ShravaniAWanjari/Brn-tmr-distributed-deployment-workflow.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh '''
-                docker build -t brain-tumor-api ./backend
-                '''
+                sh 'docker build -t brain-tumor-api ./backend'
             }
         }
 
@@ -29,9 +31,7 @@ pipeline {
 
         stage('Health Check') {
             steps {
-                sh '''
-                curl htpp://localhost:8000/health
-                '''
+                sh 'curl http://localhost:8000/health'
             }
         }
     }
