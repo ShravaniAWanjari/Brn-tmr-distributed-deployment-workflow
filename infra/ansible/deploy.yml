@@ -9,17 +9,15 @@
     - name: Remove existing container
       shell: docker rm brain-tumor-api || true
 
-    - name: Build latest image
-      shell: |
-        cd {{ playbook_dir }}/../../
-        docker build -t brain-tumor-api ./backend
+    - name: Pull latest image
+      shell: docker pull 22jadex/brain-tumor-api:latest
 
     - name: Start container
       shell: |
         docker run -d \
         --name brain-tumor-api \
         -p 8000:8000 \
-        brain-tumor-api
+        22jadex/brain-tumor-api:latest
 
     - name: Wait for startup
       pause:
