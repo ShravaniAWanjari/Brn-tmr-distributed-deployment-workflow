@@ -2,6 +2,11 @@ pipeline {
     agent {
         label 'docker-agent'
     }
+    
+    environment {
+        IMAGE_NAME = '22jadex/brain-tumor-api'
+        IMAGE_TAG = "${BUILD_NUMBER}"
+    }
 
     stages {
 
