@@ -35,6 +35,17 @@ pipeline {
                 }
             }
         }
+        stage('Push To Docker Hub') {
+            steps {
+                sh '''
+                docker tag brain-tumor-api 22jadex/brain-tumor-api:${BUILD_NUMBER}
+                docker tag brain-tumor-api 22jadex/brain-tumor-api:latest
+
+                docker push 22jadex/brain-tumor-api:${BUILD_NUMBER}
+                docker push 22jadex/brain-tumor-api:latest
+                '''
+            }
+        }
 
         stage('Deploy With Ansible') {
             steps {
