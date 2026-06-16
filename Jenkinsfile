@@ -2,7 +2,7 @@ pipeline {
     agent {
         label 'docker-agent'
     }
-    
+
     environment {
         IMAGE_NAME = '22jadex/brain-tumor-api'
         IMAGE_TAG = "${BUILD_NUMBER}"
@@ -19,6 +19,20 @@ pipeline {
         stage('Verify Image') {
             steps {
                 sh 'docker images | grep brain-tumor-api'
+            }
+        }
+
+        stage('Docker Hub Login') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'dockerhub-creds',
+                    usernameVariable: 'DOCKER_USER',
+                    passwordVariable: 'DOCKER_PASS'
+                )]) {
+                    sh '''
+                    echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
+                    '''
+                }
             }
         }
 
